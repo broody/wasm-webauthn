@@ -181,6 +181,7 @@ impl From<CredentialID> for Credential {
     }
 }
 
+#[derive(Debug, Clone)]
 pub struct MakeCredentialResponse {
     pub credential: Credential,
 }
