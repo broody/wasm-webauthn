@@ -249,16 +249,17 @@ impl GetAssertionArgs {
         let signature = Uint8Array::new(&assertion_response.signature()).to_vec();
         let client_data_json =
             String::from_utf8(Uint8Array::new(&assertion_response.client_data_json()).to_vec())?;
-        let (flags, counter) = {
+        let (flags, counter, rp_id_hash) = {
             let mut reader = authenticator_data.as_slice();
-            let _rp_id_hash = read_fixed::<32, _>(&mut reader)?;
+            let rp_id_hash = read_fixed::<32, _>(&mut reader)?;
             let flags = read_fixed::<1, _>(&mut reader)?[0];
             let counter = u32::from_be_bytes(read_fixed::<4, _>(&mut reader)?);
-            (flags, counter)
+            (flags, counter, rp_id_hash)
         };
         // TODO: read credential ID which has been used
         Ok(GetAssertionResponse {
             signature,
+            rp_id_hash,
             client_data_json,
             flags,
             counter,
@@ -269,6 +270,7 @@ impl GetAssertionArgs {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct GetAssertionResponse {
     pub signature: Vec<u8>,
+    pub rp_id_hash: [u8; 32],
     pub client_data_json: String,
     pub flags: u8,
     pub counter: u32,
