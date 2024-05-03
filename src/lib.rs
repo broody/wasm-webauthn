@@ -14,11 +14,7 @@ use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::JsFuture;
 pub use web_sys::UserVerificationRequirement;
 use web_sys::{
-    window, AuthenticatorAssertionResponse, AuthenticatorAttestationResponse,
-    AuthenticatorSelectionCriteria, CredentialCreationOptions, CredentialRequestOptions,
-    PublicKeyCredential, PublicKeyCredentialCreationOptions, PublicKeyCredentialDescriptor,
-    PublicKeyCredentialRequestOptions, PublicKeyCredentialRpEntity, PublicKeyCredentialUserEntity,
-    Window,
+    console, window, AuthenticatorAssertionResponse, AuthenticatorAttestationResponse, AuthenticatorSelectionCriteria, CredentialCreationOptions, CredentialRequestOptions, PublicKeyCredential, PublicKeyCredentialCreationOptions, PublicKeyCredentialDescriptor, PublicKeyCredentialRequestOptions, PublicKeyCredentialRpEntity, PublicKeyCredentialUserEntity, Window
 };
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Serialize)]
@@ -263,6 +259,7 @@ impl GetAssertionArgs {
             client_data_json,
             flags,
             counter,
+            authenticator_data,
         })
     }
 }
@@ -274,4 +271,5 @@ pub struct GetAssertionResponse {
     pub client_data_json: String,
     pub flags: u8,
     pub counter: u32,
+    pub authenticator_data: Vec<u8>,
 }
